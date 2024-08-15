@@ -4,7 +4,12 @@
 -- helpful to only work with useful data
 T1 (colA, colB, colC, colX, colY)
 T2 (colD, colE, colF, colG)
-CREATE TABLE T3 (colA, colB, colC, colD, colE)
+CREATE TABLE T3 (
+                colA varchaar(30),
+                colB int, 
+                colC uint, 
+                colD bigint, 
+                colE int);
 
 INSERT INTO T3 (colA, colB, colC)
 SELECT colA, colB, colC
