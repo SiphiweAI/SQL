@@ -1,0 +1,327 @@
+
+
+
+
+
+
+
+
+
+-- Table Customers has different columns to Table Customer. Transfer data in relevant columns only
+INSERT INTO Customers (FirstName, LastName, City, Phone, CustomerID)
+SELECT FirstName, LastName, City, Phone, Id
+FROM Customer;
+
+
+
+-- operations:
+
+-- retrieve a customer’s details and their interactions using the Customer ID
+-- useful in tracking interactions
+SELECT c.FirstName, c.LastName, i.InteractionType, i.InteractionDate, i.Notes
+FROM Customers c
+JOIN Interactions i ON c.CustomerID = i.CustomerID
+WHERE c.CustomerID = 1;
+
+-- find all opportunities for a particular customer
+SELECT o.OpportunityName, o.Stage, o.Amount, o.CloseDate
+FROM Opportunities o
+WHERE o.CustomerID = 1;
+
+
+
+
+
+
+
+-- Inserting 50 sample users
+INSERT INTO Users (Username, PasswordHash, Role, CreatedAt) VALUES
+('jdoe', 'hashedpassword1', 'Admin', '2024-01-01 09:00:00'),
+('asmith', 'hashedpassword2', 'Sales', '2024-01-02 10:15:00'),
+('bjohnson', 'hashedpassword3', 'Support', '2024-01-03 11:30:00'),
+('mwhite', 'hashedpassword4', 'Sales', '2024-01-04 12:45:00'),
+('kblack', 'hashedpassword5', 'Admin', '2024-01-05 14:00:00'),
+('lgreen', 'hashedpassword6', 'Support', '2024-01-06 15:15:00'),
+('pwilliams', 'hashedpassword7', 'Admin', '2024-01-07 16:30:00'),
+('jlee', 'hashedpassword8', 'Sales', '2024-01-08 17:45:00'),
+('rmoore', 'hashedpassword9', 'Support', '2024-01-09 18:00:00'),
+('tgarcia', 'hashedpassword10', 'Sales', '2024-01-10 09:15:00'),
+('sharris', 'hashedpassword11', 'Admin', '2024-01-11 10:30:00'),
+('djones', 'hashedpassword12', 'Support', '2024-01-12 11:45:00'),
+('bmiller', 'hashedpassword13', 'Sales', '2024-01-13 13:00:00'),
+('cclark', 'hashedpassword14', 'Admin', '2024-01-14 14:15:00'),
+('ajames', 'hashedpassword15', 'Support', '2024-01-15 15:30:00'),
+('hwright', 'hashedpassword16', 'Sales', '2024-01-16 16:45:00'),
+('dthompson', 'hashedpassword17', 'Admin', '2024-01-17 18:00:00'),
+('ewalker', 'hashedpassword18', 'Support', '2024-01-18 09:15:00'),
+('mallen', 'hashedpassword19', 'Sales', '2024-01-19 10:30:00'),
+('wrodriguez', 'hashedpassword20', 'Admin', '2024-01-20 11:45:00'),
+('jmoore', 'hashedpassword21', 'Support', '2024-01-21 13:00:00'),
+('gcooper', 'hashedpassword22', 'Sales', '2024-01-22 14:15:00'),
+('nbaker', 'hashedpassword23', 'Admin', '2024-01-23 15:30:00'),
+('akim', 'hashedpassword24', 'Support', '2024-01-24 16:45:00'),
+('lsmith', 'hashedpassword25', 'Sales', '2024-01-25 18:00:00'),
+('dgrant', 'hashedpassword26', 'Admin', '2024-01-26 09:15:00'),
+('bking', 'hashedpassword27', 'Support', '2024-01-27 10:30:00'),
+('hwatson', 'hashedpassword28', 'Sales', '2024-01-28 11:45:00'),
+('tcollins', 'hashedpassword29', 'Admin', '2024-01-29 13:00:00'),
+('psmith', 'hashedpassword30', 'Support', '2024-01-30 14:15:00'),
+('ccampbell', 'hashedpassword31', 'Sales', '2024-01-31 15:30:00'),
+('jstevens', 'hashedpassword32', 'Admin', '2024-02-01 16:45:00'),
+('rthomas', 'hashedpassword33', 'Support', '2024-02-02 18:00:00'),
+('emorris', 'hashedpassword34', 'Sales', '2024-02-03 09:15:00'),
+('jbennett', 'hashedpassword35', 'Admin', '2024-02-04 10:30:00'),
+('twilson', 'hashedpassword36', 'Support', '2024-02-05 11:45:00'),
+('mgordon', 'hashedpassword37', 'Sales', '2024-02-06 13:00:00'),
+('kjackson', 'hashedpassword38', 'Admin', '2024-02-07 14:15:00'),
+('dcampbell', 'hashedpassword39', 'Support', '2024-02-08 15:30:00'),
+('bgonzalez', 'hashedpassword40', 'Sales', '2024-02-09 16:45:00'),
+( 'ehernandez', 'hashedpassword41', 'Admin', '2024-02-10 18:00:00'),
+('janderson', 'hashedpassword42', 'Support', '2024-02-11 09:15:00'),
+('sharrist', 'hashedpassword43', 'Sales', '2024-02-12 10:30:00'),
+('gmartin', 'hashedpassword44', 'Admin', '2024-02-13 11:45:00'),
+('tthompson', 'hashedpassword45', 'Support', '2024-02-14 13:00:00'),
+('mreynolds', 'hashedpassword46', 'Sales', '2024-02-15 14:15:00'),
+('bparker', 'hashedpassword47', 'Admin', '2024-02-16 15:30:00'),
+('ckelly', 'hashedpassword48', 'Support', '2024-02-17 16:45:00'),
+('jperry', 'hashedpassword49', 'Sales', '2024-02-18 18:00:00'),
+('mwalker', 'hashedpassword50', 'Admin', '2024-02-19 09:15:00');
+
+
+
+
+
+
+-- Inserting 50 sample tasks
+INSERT INTO Tasks (CustomerID, OpportunityID, TaskDescription, DueDate, Status) VALUES
+(1, 1, 'Follow up on initial proposal', '2024-08-15', 'Not Started'),
+(1, 2, 'Review website redesign mockups', '2024-08-18', 'In Progress'),
+(1, 3, 'Compile market research data', '2024-09-01', 'Not Started'),
+(2, 4, 'Prepare CRM implementation plan', '2024-07-25', 'Completed'),
+(2, 5, 'Finalize SEO strategy', '2024-08-30', 'In Progress'),
+(2, 6, 'Set up social media campaign', '2024-08-20', 'Completed'),
+(3, 7, 'Develop product expansion strategy', '2024-09-10', 'Not Started'),
+(3, 8, 'Organize employee training sessions', '2024-08-20', 'In Progress'),
+(3, 9, 'Secure office relocation logistics', '2024-07-10', 'Completed'),
+(4, 10, 'Implement customer feedback system', '2024-09-05', 'Not Started'),
+(4, 11, 'Launch new software module', '2024-08-15', 'In Progress'),
+(4, 12, 'Schedule maintenance contract', '2024-10-01', 'Not Started'),
+(5, 13, 'Renew annual subscription contract', '2024-08-08', 'Completed'),
+(5, 14, 'Review consulting services proposal', '2024-07-28', 'Completed'),
+(5, 15, 'Develop IT support plan', '2024-09-10', 'Not Started'),
+(6, 16, 'Plan e-commerce integration', '2024-08-25', 'In Progress'),
+(6, 17, 'Finalize product design', '2024-09-15', 'Not Started'),
+(6, 18, 'Train customer service team', '2024-07-20', 'Completed'),
+(7, 19, 'Develop sales training materials', '2024-09-20', 'Not Started'),
+(7, 20, 'Conduct market analysis', '2024-08-15', 'Completed'),
+(7, 21, 'Update brand identity', '2024-10-01', 'In Progress'),
+(8, 22, 'Design customer loyalty program', '2024-08-10', 'Completed'),
+(8, 23, 'Analyze website analytics', '2024-09-05', 'Not Started'),
+(8, 24, 'Develop product training materials', '2024-07-30', 'Completed'),
+(9, 25, 'Create digital marketing strategy', '2024-09-15', 'In Progress'),
+(9, 26, 'Implement sales automation tool', '2024-08-20', 'Completed'),
+(9, 27, 'Explore market expansion opportunities', '2024-10-01', 'Not Started'),
+(10, 28, 'Organize training and development program', '2024-07-30', 'Completed'),
+(10, 29, 'Enhance customer experience', '2024-09-25', 'In Progress'),
+(10, 30, 'Plan software upgrade', '2024-08-05', 'Completed'),
+(11, 31, 'Evaluate outsourcing solutions', '2024-08-15', 'Not Started'),
+(11, 32, 'Optimize internal processes', '2024-07-25', 'Completed'),
+(11, 33, 'Manage customer data effectively', '2024-09-01', 'In Progress'),
+(12, 34, 'Launch new product marketing campaign', '2024-08-20', 'Completed'),
+(12, 35, 'Conduct financial analysis', '2024-09-05', 'Not Started'),
+(12, 36, 'Design customer retention program', '2024-07-30', 'Completed'),
+(13, 37, 'Manage supply chain', '2024-09-30', 'In Progress'),
+(13, 38, 'Upgrade IT infrastructure', '2024-08-15', 'Completed'),
+(13, 39, 'Consult on risk management', '2024-07-20', 'Completed'),
+(14, 40, 'Develop mobile app', '2024-09-15', 'Not Started'),
+(14, 41, 'Improve user experience design', '2024-08-25', 'In Progress'),
+(14, 42, 'Evaluate business intelligence tools', '2024-07-30', 'Completed'),
+(15, 43, 'Segment customer base', '2024-09-05', 'Not Started'),
+(15, 44, 'Migrate to cloud', '2024-08-10', 'Completed'),
+(15, 45, 'Analyze competitive landscape', '2024-07-25', 'Completed'),
+(16, 46, 'Optimize performance marketing', '2024-09-25', 'In Progress'),
+(16, 47, 'Forecast sales trends', '2024-08-20', 'Completed'),
+(16, 48, 'Plan market entry strategy', '2024-07-30', 'Not Started'),
+(17, 49, 'Develop partnership strategy', '2024-09-20', 'Not Started'),
+(17, 50, 'Map customer journey', '2024-08-25', 'Completed');
+
+
+
+
+
+
+
+
+
+
+
+
+-- Inserting 50 sample interactions
+INSERT INTO Interactions (CustomerID, InteractionType, InteractionDate, Notes) VALUES
+(1, 'Call', '2024-08-01 09:30:00', 'Discussed new product features.'),
+(1, 'Email', '2024-08-02 10:00:00', 'Sent product brochure.'),
+(1, 'Meeting', '2024-08-05 14:00:00', 'Meeting to discuss contract terms.'),
+(1, 'Call', '2024-08-10 11:00:00', 'Follow-up on contract signing.'),
+(1, 'Email', '2024-08-15 16:00:00', 'Sent reminder for the upcoming webinar.'),
+(2, 'Call', '2024-08-01 13:00:00', 'Introduced the new service offering.'),
+(2, 'Email', '2024-08-03 09:00:00', 'Follow-up email on the service introduction.'),
+(2, 'Meeting', '2024-08-07 10:30:00', 'Reviewed service packages.'),
+(2, 'Call', '2024-08-12 15:00:00', 'Discussed customization options.'),
+(2, 'Email', '2024-08-20 11:00:00', 'Sent contract draft for review.'),
+(3, 'Meeting', '2024-08-01 10:00:00', 'Initial consultation meeting.'),
+(3, 'Call', '2024-08-04 14:00:00', 'Discussed project requirements.'),
+(3, 'Email', '2024-08-08 08:30:00', 'Sent proposal for review.'),
+(3, 'Meeting', '2024-08-12 09:00:00', 'Follow-up on proposal discussion.'),
+(3, 'Call', '2024-08-16 13:00:00', 'Confirmed project start date.'),
+(4, 'Email', '2024-08-02 11:00:00', 'Sent welcome email and onboarding guide.'),
+(4, 'Call', '2024-08-05 16:00:00', 'Answered questions about onboarding.'),
+(4, 'Meeting', '2024-08-08 10:00:00', 'Kickoff meeting for new project.'),
+(4, 'Call', '2024-08-14 09:00:00', 'Reviewed project milestones.'),
+(4, 'Email', '2024-08-18 15:00:00', 'Sent project status report.'),
+(5, 'Meeting', '2024-08-01 14:00:00', 'Discussed potential partnership.'),
+(5, 'Email', '2024-08-03 11:00:00', 'Sent partnership proposal.'),
+(5, 'Call', '2024-08-07 13:00:00', 'Follow-up on partnership proposal.'),
+(5, 'Meeting', '2024-08-11 16:00:00', 'Negotiated partnership terms.'),
+(5, 'Email', '2024-08-15 10:00:00', 'Sent final agreement for signature.'),
+(6, 'Call', '2024-08-02 09:00:00', 'Discussed support ticket resolution.'),
+(6, 'Email', '2024-08-04 14:00:00', 'Sent support ticket update.'),
+(6, 'Meeting', '2024-08-08 11:00:00', 'Reviewed support issues and solutions.'),
+(6, 'Call', '2024-08-12 13:00:00', 'Confirmed issue resolution.'),
+(6, 'Email', '2024-08-17 16:00:00', 'Sent feedback survey.'),
+(7, 'Meeting', '2024-08-03 10:00:00', 'Discussed renewal options.'),
+(7, 'Email', '2024-08-06 12:00:00', 'Sent renewal offer.'),
+(7, 'Call', '2024-08-10 09:30:00', 'Follow-up on renewal offer.'),
+(7, 'Meeting', '2024-08-14 11:00:00', 'Finalized renewal terms.'),
+(7, 'Email', '2024-08-20 10:00:00', 'Sent confirmation of renewal.'),
+(8, 'Call', '2024-08-02 16:00:00', 'Inquired about new service features.'),
+(8, 'Email', '2024-08-05 10:00:00', 'Sent details about new features.'),
+(8, 'Meeting', '2024-08-09 14:00:00', 'Discussed integration options.'),
+(8, 'Call', '2024-08-13 11:00:00', 'Answered questions about integration.'),
+(8, 'Email', '2024-08-18 09:00:00', 'Sent integration guide.'),
+(9, 'Meeting', '2024-08-04 13:00:00', 'Initial product demo.'),
+(9, 'Email', '2024-08-07 16:00:00', 'Sent demo feedback form.'),
+(9, 'Call', '2024-08-11 14:00:00', 'Discussed demo feedback.'),
+(9, 'Meeting', '2024-08-15 10:00:00', 'Reviewed pricing options.'),
+(9, 'Email', '2024-08-20 12:00:00', 'Sent final pricing proposal.'),
+(10, 'Call', '2024-08-03 09:00:00', 'Discussed account setup issues.'),
+(10, 'Email', '2024-08-06 14:00:00', 'Sent setup instructions.'),
+(10, 'Meeting', '2024-08-09 11:00:00', 'Reviewed setup process.'),
+(10, 'Call', '2024-08-13 13:00:00', 'Confirmed successful setup.'),
+(10, 'Email', '2024-08-18 16:00:00', 'Sent welcome kit.'),
+(1, 'Meeting', '2024-08-20 09:00:00', 'Discussed additional features.'),
+(2, 'Call', '2024-08-21 10:00:00', 'Follow-up on feature request.'),
+(3, 'Email', '2024-08-22 11:00:00', 'Sent project plan update.'),
+(4, 'Meeting', '2024-08-23 12:00:00', 'Reviewed project deliverables.'),
+(5, 'Call', '2024-08-24 13:00:00', 'Discussed implementation timeline.'),
+(6, 'Email', '2024-08-25 14:00:00', 'Sent final invoice.'),
+(7, 'Meeting', '2024-08-26 15:00:00', 'Evaluated contract performance.'),
+(8, 'Call', '2024-08-27 16:00:00', 'Addressed billing concerns.'),
+(9, 'Email', '2024-08-28 17:00:00', 'Sent feedback request.'),
+(10, 'Meeting', '2024-08-29 09:00:00', 'Final review and wrap-up.'),
+(1, 'Email', '2024-08-30 10:00:00', 'Sent end-of-month summary.'),
+(2, 'Call', '2024-08-31 11:00:00', 'Discussed next quarter plans.'),
+(3, 'Meeting', '2024-09-01 12:00:00', 'Initial planning for upcoming project.'),
+(4, 'Email', '2024-09-02 13:00:00', 'Sent project updates and next steps.'),
+(5, 'Call', '2024-09-03 14:00:00', 'Reviewed project milestones.'),
+(6, 'Meeting', '2024-09-04 15:00:00', 'Discussed support improvements.'),
+(7, 'Email', '2024-09-05 16:00:00', 'Sent follow-up on feedback.'),
+(8, 'Call', '2024-09-06 17:00:00', 'Discussed feature enhancement.'),
+(9, 'Meeting', '2024-09-07 09:00:00', 'Reviewed annual contract renewal.'),
+(10, 'Email', '2024-09-08 10:00:00', 'Sent updated service agreement.');
+
+
+
+
+
+
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(1,'Maria','Anders','Berlin','Germany','030-0074321');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(2,'Ana','Trujillo','México D.F.','Mexico','(5) 555-4729');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(3,'Antonio','Moreno','México D.F.','Mexico','(5) 555-3932');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(4,'Thomas','Hardy','London','UK','(171) 555-7788');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(5,'Christina','Berglund','Luleå','Sweden','0921-12 34 65');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(6,'Hanna','Moos','Mannheim','Germany','0621-08460');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(7,'Frédérique','Citeaux','Strasbourg','France','88.60.15.31');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(8,'Martín','Sommer','Madrid','Spain','(91) 555 22 82');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(9,'Laurence','Lebihan','Marseille','France','91.24.45.40');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(10,'Elizabeth','Lincoln','Tsawassen','Canada','(604) 555-4729');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(11,'Victoria','Ashworth','London','UK','(171) 555-1212');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(12,'Patricio','Simpson','Buenos Aires','Argentina','(1) 135-5555');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(13,'Francisco','Chang','México D.F.','Mexico','(5) 555-3392');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(14,'Yang','Wang','Bern','Switzerland','0452-076545');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(15,'Pedro','Afonso','Sao Paulo','Brazil','(11) 555-7647');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(16,'Elizabeth','Brown','London','UK','(171) 555-2282');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(17,'Sven','Ottlieb','Aachen','Germany','0241-039123');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(18,'Janine','Labrune','Nantes','France','40.67.88.88');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(19,'Ann','Devon','London','UK','(171) 555-0297');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(20,'Roland','Mendel','Graz','Austria','7675-3425');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(21,'Aria','Cruz','Sao Paulo','Brazil','(11) 555-9857');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(22,'Diego','Roel','Madrid','Spain','(91) 555 94 44');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(23,'Martine','Rancé','Lille','France','20.16.10.16');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(24,'Maria','Larsson','Bräcke','Sweden','0695-34 67 21');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(25,'Peter','Franken','München','Germany','089-0877310');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(26,'Carine','Schmitt','Nantes','France','40.32.21.21');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(27,'Paolo','Accorti','Torino','Italy','011-4988260');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(28,'Lino','Rodriguez','Lisboa','Portugal','(1) 354-2534');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(29,'Eduardo','Saavedra','Barcelona','Spain','(93) 203 4560');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(30,'José','Pedro Freyre','Sevilla','Spain','(95) 555 82 82');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(31,'André','Fonseca','Campinas','Brazil','(11) 555-9482');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(32,'Howard','Snyder','Eugene','USA','(503) 555-7555');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(33,'Manuel','Pereira','Caracas','Venezuela','(2) 283-2951');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(34,'Mario','Pontes','Rio de Janeiro','Brazil','(21) 555-0091');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(35,'Carlos','Hernández','San Cristóbal','Venezuela','(5) 555-1340');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(36,'Yoshi','Latimer','Elgin','USA','(503) 555-6874');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(37,'Patricia','McKenna','Cork','Ireland','2967 542');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(38,'Helen','Bennett','Cowes','UK','(198) 555-8888');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(39,'Philip','Cramer','Brandenburg','Germany','0555-09876');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(40,'Daniel','Tonini','Versailles','France','30.59.84.10');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(41,'Annette','Roulet','Toulouse','France','61.77.61.10');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(42,'Yoshi','Tannamuri','Vancouver','Canada','(604) 555-3392');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(43,'John','Steel','Walla Walla','USA','(509) 555-7969');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(44,'Renate','Messner','Frankfurt a.M.','Germany','069-0245984');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(45,'Jaime','Yorres','San Francisco','USA','(415) 555-5938');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(46,'Carlos','González','Barquisimeto','Venezuela','(9) 331-6954');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(47,'Felipe','Izquierdo','I. de Margarita','Venezuela','(8) 34-56-12');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(48,'Fran','Wilson','Portland','USA','(503) 555-9573');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(49,'Giovanni','Rovelli','Bergamo','Italy','035-640230');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(50,'Catherine','Dewey','Bruxelles','Belgium','(02) 201 24 67');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(51,'Jean','Fresnière','Montréal','Canada','(514) 555-8054');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(52,'Alexander','Feuer','Leipzig','Germany','0342-023176');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(53,'Simon','Crowther','London','UK','(171) 555-7733');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(54,'Yvonne','Moncada','Buenos Aires','Argentina','(1) 135-5333');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(55,'Rene','Phillips','Anchorage','USA','(907) 555-7584');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(56,'Henriette','Pfalzheim','Köln','Germany','0221-0644327');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(57,'Marie','Bertrand','Paris','France','(1) 42.34.22.66');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(58,'Guillermo','Fernández','México D.F.','Mexico','(5) 552-3745');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(59,'Georg','Pipps','Salzburg','Austria','6562-9722');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(60,'Isabel','de Castro','Lisboa','Portugal','(1) 356-5634');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(61,'Bernardo','Batista','Rio de Janeiro','Brazil','(21) 555-4252');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(62,'Lúcia','Carvalho','Sao Paulo','Brazil','(11) 555-1189');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(63,'Horst','Kloss','Cunewalde','Germany','0372-035188');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(64,'Sergio','Gutiérrez','Buenos Aires','Argentina','(1) 123-5555');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(65,'Paula','Wilson','Albuquerque','USA','(505) 555-5939');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(66,'Maurizio','Moroni','Reggio Emilia','Italy','0522-556721');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(67,'Janete','Limeira','Rio de Janeiro','Brazil','(21) 555-3412');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(68,'Michael','Holz','Genève','Switzerland','0897-034214');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(69,'Alejandra','Camino','Madrid','Spain','(91) 745 6200');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(70,'Jonas','Bergulfsen','Stavern','Norway','07-98 92 35');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(71,'Jose','Pavarotti','Boise','USA','(208) 555-8097');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(72,'Hari','Kumar','London','UK','(171) 555-1717');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(73,'Jytte','Petersen','Kobenhavn','Denmark','31 12 34 56');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(74,'Dominique','Perrier','Paris','France','(1) 47.55.60.10');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(75,'Art','Braunschweiger','Lander','USA','(307) 555-4680');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(76,'Pascale','Cartrain','Charleroi','Belgium','(071) 23 67 22 20');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(77,'Liz','Nixon','Portland','USA','(503) 555-3612');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(78,'Liu','Wong','Butte','USA','(406) 555-5834');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(79,'Karin','Josephs','Münster','Germany','0251-031259');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(80,'Miguel','Angel Paolino','México D.F.','Mexico','(5) 555-2933');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(81,'Anabela','Domingues','Sao Paulo','Brazil','(11) 555-2167');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(82,'Helvetius','Nagy','Kirkland','USA','(206) 555-8257');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(83,'Palle','Ibsen','Århus','Denmark','86 21 32 43');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(84,'Mary','Saveley','Lyon','France','78.32.54.86');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(85,'Paul','Henriot','Reims','France','26.47.15.10');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(86,'Rita','Müller','Stuttgart','Germany','0711-020361');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(87,'Pirkko','Koskitalo','Oulu','Finland','981-443655');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(88,'Paula','Parente','Resende','Brazil','(14) 555-8122');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(89,'Karl','Jablonski','Seattle','USA','(206) 555-4112');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(90,'Matti','Karttunen','Helsinki','Finland','90-224 8858');
+INSERT INTO Customer (Id, FirstName, LastName, City, Country, Phone)VALUES(91,'Zbyszek','Piestrzeniewicz','Warszawa','Poland','(26) 642-7012');
