@@ -1,1 +1,149 @@
 
+-- this table has all users, if the gym is big, consider having separate tables for staff and members
+CREATE TABLE Users (
+    UserID INT AUTO_INCREMENT PRIMARY KEY,
+    Username VARCHAR(50) UNIQUE NOT NULL,
+    PasswordHash VARCHAR(255) NOT NULL,
+    FirstName VARCHAR(50) NOT NULL,
+    LastName VARCHAR(50) NOT NULL,
+    Email VARCHAR(100) UNIQUE NOT NULL,
+    Phone VARCHAR(20),
+    Role ENUM('Office Staff', 'Trainer', 'Member') NOT NULL,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	MembershipID INT,
+    FOREIGN KEY (MembershipID) REFERENCES Memberships(MembershipID) ON DELETE SET NULL			-- will copy the ID from Memberships table
+);
+
+
+CREATE TABLE Memberships (
+    MembershipID INT AUTO_INCREMENT PRIMARY KEY,
+    PlanName VARCHAR(100) NOT NULL,
+    StartDate DATE NOT NULL,
+    EndDate DATE NOT NULL,
+    Status ENUM('Active', 'Inactive', 'Expired') DEFAULT 'Active'
+);
+
+-- Trigger to match UserID with MembershipID on Users
+DELIMITER //											-- defining new delimiter, replacing ';'
+CREATE TRIGGER before_user_insert
+BEFORE INSERT ON Users
+FOR EACH ROW
+BEGIN
+    IF NEW.MembershipID IS NOT NULL THEN			    -- if MembershipID is provided, ensure UserID is set to MembershipID
+        IF NEW.UserID IS NULL THEN        				-- prevent setting UserID manually if it is auto-incremented
+            SET NEW.UserID = NEW.MembershipID;
+        END IF;
+    END IF;
+    -- If MembershipID is NULL, let UserID be auto-incremented
+    -- This is handled by default if NEW.MembershipID IS NULL and NEW.UserID IS NULL
+END; //
+DELIMITER ;
+
+
+
+
+CREATE TABLE Classes (
+    ClassID INT AUTO_INCREMENT PRIMARY KEY,
+    ClassName VARCHAR(100) NOT NULL,
+    Description TEXT,
+    Schedule DATETIME NOT NULL,
+    Capacity INT NOT NULL,
+    TrainerID INT,
+    FOREIGN KEY (TrainerID) REFERENCES Users(UserID)
+);
+
+
+CREATE TABLE Enrollments (
+    EnrollmentID INT AUTO_INCREMENT PRIMARY KEY,
+    UserID INT,
+    ClassID INT,
+    EnrollmentDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID),
+    FOREIGN KEY (ClassID) REFERENCES Classes(ClassID),
+    UNIQUE(UserID, ClassID) 										-- ensures a user cannot enroll in the same class more than once
+);
+
+
+CREATE TABLE WorkoutPlans (
+    PlanID INT AUTO_INCREMENT PRIMARY KEY,
+    TrainerID INT,
+    MemberID INT,
+    PlanName VARCHAR(100) NOT NULL,
+    StartDate DATE NOT NULL,
+    EndDate DATE NOT NULL,
+    Details TEXT,
+    FOREIGN KEY (TrainerID) REFERENCES Users(UserID),
+    FOREIGN KEY (MemberID) REFERENCES Users(UserID)
+);
+
+
+
+-- Query examples
+
+-- to get the membership details for a specific member
+SELECT u.FirstName, u.LastName, m.PlanName, m.StartDate, m.EndDate, m.Status
+FROM Memberships m
+JOIN Users u ON m.UserID = u.UserID
+WHERE u.Username = 'jdoe';
+
+-- to view classes that still have available slots
+SELECT c.ClassName, c.Description, c.Schedule, (c.Capacity - COUNT(e.UserID)) AS AvailableSlots
+FROM Classes c
+LEFT JOIN Enrollments e ON c.ClassID = e.ClassID
+GROUP BY c.ClassID;
+
+-- to view a list of all personal training sessions scheduled for a specific trainer
+SELECT p.SessionID, m.FirstName AS MemberFirstName, m.LastName AS MemberLastName, p.SessionDate, p.SessionDuration, p.Notes
+FROM PersonalTrainingSessions p
+JOIN Users m ON p.MemberID = m.UserID
+WHERE p.TrainerID = 478;  -- example TrainerID 
+
+-- to update a member's membership status
+UPDATE Memberships
+SET Status = 'Expired'
+WHERE MembershipID = 754;  -- example MembershipID 
+
+-- to see workout plans associated with a specific member
+SELECT wp.PlanName, wp.StartDate, wp.EndDate, wp.Details
+FROM WorkoutPlans wp
+JOIN Users u ON wp.MemberID = u.UserID
+WHERE u.Username = 'jdoe';
+
+-- to view upcoming classes
+SELECT ClassName, Description, Schedule
+FROM Classes
+WHERE Schedule BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 7 DAY);
+
+-- to view a list of members enrolled in a specific class
+SELECT u.FirstName, u.LastName, u.Email
+FROM Enrollments e
+JOIN Users u ON e.UserID = u.UserID
+WHERE e.ClassID = 11;  -- example ClassID 
+
+-- to verify if a specific user is already enrolled in a class
+SELECT COUNT(*)
+FROM Enrollments
+WHERE UserID = 167 AND ClassID = 2;  -- example UserID and ClassID
+
+-- to the total number of personal training sessions conducted by a specific trainer
+SELECT COUNT(*) AS TotalSessions
+FROM PersonalTrainingSessions
+WHERE TrainerID = 974;  -- eg TrainerID 
+
+-- to see revenue from membership fees NB: would require that we have MembershipFees table
+SELECT SUM(f.FeeAmount) AS TotalRevenue
+FROM Memberships m
+JOIN MembershipFees f ON m.PlanName = f.PlanName
+WHERE m.Status = 'Active';
+
+
+
+
+
+
+
+
+
+
+
+select * from users
