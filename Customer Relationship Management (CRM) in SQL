@@ -6,7 +6,6 @@
 
 
 
-
 -- Table Customers has different columns to Table Customer. Transfer data in relevant columns only
 INSERT INTO Customers (FirstName, LastName, City, Phone, CustomerID)
 SELECT FirstName, LastName, City, Phone, Id
