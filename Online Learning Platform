@@ -1,1 +1,95 @@
 
+CREATE TABLE Users (									-- include learners only, use separate table for staff for simplicity
+    UserID INT PRIMARY KEY AUTO_INCREMENT,
+    Username VARCHAR(50) UNIQUE NOT NULL,
+    PasswordHash VARCHAR(255) NOT NULL,
+    Email VARCHAR(100) UNIQUE NOT NULL,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    Role ENUM('Student', 'Instructor', 'Admin') NOT NULL,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE Courses (
+    CourseID INT PRIMARY KEY AUTO_INCREMENT,
+    Title VARCHAR(100) NOT NULL,
+    Description TEXT,
+    InstructorID INT,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (InstructorID) REFERENCES Users(UserID)
+);
+
+CREATE TABLE Lessons (
+    LessonID INT PRIMARY KEY AUTO_INCREMENT,
+    CourseID INT,
+    Title VARCHAR(100) NOT NULL,
+    Content TEXT NOT NULL,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (CourseID) REFERENCES Courses(CourseID)
+);
+
+CREATE TABLE Enrollments (
+    EnrollmentID INT PRIMARY KEY AUTO_INCREMENT,
+    UserID INT,
+    CourseID INT,
+    EnrollmentDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID),
+    FOREIGN KEY (CourseID) REFERENCES Courses(CourseID),
+    UNIQUE(UserID, CourseID) -- Ensure a user can enroll in a course only once
+);
+
+CREATE TABLE Quizzes (								-- similar can be done for various tasks
+    QuizID INT PRIMARY KEY AUTO_INCREMENT,
+    CourseID INT,
+    Title VARCHAR(100) NOT NULL,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (CourseID) REFERENCES Courses(CourseID)
+);
+
+
+
+-- Examples of quiries
+
+-- to get all Lessons for a specific course
+SELECT * FROM Lessons 
+WHERE CourseID = 1;  -- Assuming CourseID 1
+
+-- to see all enrollments for a specific student
+SELECT Courses.Title AS CourseTitle, Enrollments.EnrollmentDate
+FROM Enrollments
+JOIN Courses ON Enrollments.CourseID = Courses.CourseID
+WHERE Enrollments.UserID = 1;  -- Assuming UserID 1
+
+-- make changes
+UPDATE Users
+SET Role = 'Instructor'
+WHERE UserID = 2;  -- Assuming UserID 2
+
+-- view all students enrolled in a specific course
+SELECT Users.Username, Users.Email
+FROM Enrollments
+JOIN Users ON Enrollments.UserID = Users.UserID
+WHERE Enrollments.CourseID = 156;  -- example CourseID 
+
+-- see how many students are enrolled in each course
+SELECT Courses.Title, COUNT(Enrollments.UserID) AS NumberOfStudents
+FROM Courses
+LEFT JOIN Enrollments ON Courses.CourseID = Enrollments.CourseID
+GROUP BY Courses.CourseID;
+
+-- to  list all lessons and their course titles
+SELECT Lessons.Title AS LessonTitle, Courses.Title AS CourseTitle
+FROM Lessons
+JOIN Courses ON Lessons.CourseID = Courses.CourseID;
+
+-- TRANSACTIONS: all operations succeed or all fail
+
+--  enroll a student and add a new lesson in a Transaction
+START TRANSACTION;
+INSERT INTO Enrollments (UserID, CourseID) 
+VALUES (124, 835);  -- Enroll UserID 124 in CourseID 835
+INSERT INTO Lessons (CourseID, Title, Content) 
+VALUES (459, 'Advanced Topics', 'This lesson covers advanced SQL topics.');  -- Add Lesson to CourseID 459
+COMMIT;
+
