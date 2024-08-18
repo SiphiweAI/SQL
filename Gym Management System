@@ -87,10 +87,10 @@ JOIN Users u ON m.UserID = u.UserID
 WHERE u.Username = 'jdoe';
 
 -- to view classes that still have available slots
-SELECT c.ClassName, c.Description, c.Schedule, (c.Capacity - COUNT(e.UserID)) AS AvailableSlots
-FROM Classes c
-LEFT JOIN Enrollments e ON c.ClassID = e.ClassID
-GROUP BY c.ClassID;
+SELECT c.ClassName, c.Description, c.Schedule, (c.Capacity - COUNT(e.UserID)) AS AvailableSlots			-- capacity minus users enrolled
+FROM Classes c													-- c is alias
+LEFT JOIN Enrollments e ON c.ClassID = e.ClassID								-- Left ensures all values from c are included
+GROUP BY c.ClassID;												-- grouping is necessary for this COUNT
 
 -- to view a list of all personal training sessions scheduled for a specific trainer
 SELECT p.SessionID, m.FirstName AS MemberFirstName, m.LastName AS MemberLastName, p.SessionDate, p.SessionDuration, p.Notes
@@ -118,12 +118,12 @@ WHERE Schedule BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 7 DAY);
 SELECT u.FirstName, u.LastName, u.Email
 FROM Enrollments e
 JOIN Users u ON e.UserID = u.UserID
-WHERE e.ClassID = 11;  -- example ClassID 
+WHERE e.ClassID = 11; 				  -- example ClassID 
 
 -- to verify if a specific user is already enrolled in a class
 SELECT COUNT(*)
 FROM Enrollments
-WHERE UserID = 167 AND ClassID = 2;  -- example UserID and ClassID
+WHERE UserID = 167 AND ClassID = 2; 	 	  -- example UserID and ClassID
 
 -- to the total number of personal training sessions conducted by a specific trainer
 SELECT COUNT(*) AS TotalSessions
