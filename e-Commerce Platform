@@ -80,23 +80,22 @@ CREATE TABLE CartItems (
 
 
 
-START TRANSACTION;                                                  -- best practice. all these must happen simultaneously. All or none
-
-INSERT INTO Orders (UserID, ShippingAddress, TotalAmount, Status)	  -- insert a new order
+START TRANSACTION;                                                      -- best practice. all these must happen simultaneously. All or none
+INSERT INTO Orders (UserID, ShippingAddress, TotalAmount, Status)	    -- insert a new order
 VALUES (1, '123 Main St, Anytown, USA', 1399.98, 'pending');
-
-SET @OrderID = LAST_INSERT_ID();								                  	-- capture the generated OrderID
-
+SET @OrderID = LAST_INSERT_ID();								       	-- capture the generated OrderID
 INSERT INTO OrderItems (OrderID, ProductID, Quantity, Price)		    -- insert order items
 VALUES (@OrderID, 771, 354, 699.99);
-
-UPDATE Products														                          -- update stock quantities
+UPDATE Products							                                -- update stock quantities
 SET StockQuantity = StockQuantity - 2
 WHERE ProductID = 147;
-
 COMMIT;																-- if no errors, commit the transaction
 ROLLBACK;															-- if there are errors, revert step
 
 
+-- To see a particular user's reviews
+SELECT UserID, Rating, ReviewText
+FROM Reviews
+WHERE UserID = 451
 
 
